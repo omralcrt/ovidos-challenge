@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyAlbums</string>
+    <string name="no_album">No Albums Found.</string>
 </resources>

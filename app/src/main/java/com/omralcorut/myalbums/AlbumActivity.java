@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private AlbumAdapter adapter;
 
+    private TextView emptyStateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,9 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
 
         //Initilize listView
         ListView albumListView = (ListView) findViewById(R.id.list);
+
+        emptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        albumListView.setEmptyView(emptyStateTextView);
 
         //Create custom array adapter
         adapter = new AlbumAdapter(this, new ArrayList<Album>());
@@ -58,6 +64,9 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<List<Album>> loader, List<Album> albums) {
+
+        emptyStateTextView.setText(R.string.no_album);
+
         adapter.clear();
 
         if (albums != null && !albums.isEmpty()) {
