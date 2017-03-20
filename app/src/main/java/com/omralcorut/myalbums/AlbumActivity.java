@@ -1,8 +1,11 @@
 package com.omralcorut.myalbums;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +34,7 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
         //Initilize listView
         ListView albumListView = (ListView) findViewById(R.id.list);
 
+        //If list is empty, show message
         emptyStateTextView = (TextView) findViewById(R.id.empty_view);
         albumListView.setEmptyView(emptyStateTextView);
 
@@ -51,11 +55,21 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
-        LoaderManager loaderManager = getLoaderManager();
-
-        loaderManager.initLoader(ALBUM_LOADER_ID, null, this);
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            //Load list
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(ALBUM_LOADER_ID, null, this);
+        } else {
+            View loadingIndicator = findViewById(R.id.loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+            emptyStateTextView.setText(R.string.no_internet_connection);
+        }
 
     }
+
 
     @Override
     public Loader<List<Album>> onCreateLoader(int id, Bundle args) {
@@ -69,6 +83,7 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
+        //Initilize empty state
         emptyStateTextView.setText(R.string.no_album);
 
         adapter.clear();

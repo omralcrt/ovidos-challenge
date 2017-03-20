@@ -108,6 +108,7 @@ public class QueryUtils {
         return output.toString();
     }
 
+    //Create album list with given string json
     private static List<Album> extractFeatureFromJson(String albumJSON) {
 
         if (TextUtils.isEmpty(albumJSON)) {
