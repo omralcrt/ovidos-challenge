@@ -65,6 +65,10 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<List<Album>> loader, List<Album> albums) {
 
+        //Show loading indicator
+        View loadingIndicator = findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
         emptyStateTextView.setText(R.string.no_album);
 
         adapter.clear();
