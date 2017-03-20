@@ -15,22 +15,20 @@ public class AlbumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_album);
 
         //Create fake album arrayList
-        ArrayList<String> albums = new ArrayList<>();
-        albums.add("Album1");
-        albums.add("Album2");
-        albums.add("Album3");
-        albums.add("Album4");
-        albums.add("Album5");
-        albums.add("Album6");
-        albums.add("Album7");
+        ArrayList<Album> albums = new ArrayList<>();
+        albums.add(new Album(1,1,"Album1"));
+        albums.add(new Album(1,2,"Album2"));
+        albums.add(new Album(1,3,"Album3"));
+        albums.add(new Album(2,4,"Album4"));
+        albums.add(new Album(3,5,"Album5"));
+        albums.add(new Album(3,6,"Album6"));
+        albums.add(new Album(3,7,"Album7"));
 
         //Initilize listView
         ListView albumListView = (ListView) findViewById(R.id.list);
 
-        //Create array adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, albums
-        );
+        //Create custom array adapter
+        AlbumAdapter adapter = new AlbumAdapter(this, albums);
 
         //connect albums arrayList to listView
         albumListView.setAdapter(adapter);
