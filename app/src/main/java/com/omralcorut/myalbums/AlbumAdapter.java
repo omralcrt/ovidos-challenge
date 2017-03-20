@@ -40,7 +40,7 @@ public class AlbumAdapter extends ArrayAdapter<Album> {
 
         //Display title of object
         TextView title = (TextView) listItemView.findViewById(R.id.title);
-        title.setText(currentAlbum.getTitle());
+        title.setText(currentAlbum.getTitle().toUpperCase());
 
         return listItemView;
     }
