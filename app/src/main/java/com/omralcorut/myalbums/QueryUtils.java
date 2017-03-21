@@ -40,9 +40,100 @@ public class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        List<Album> albums = extractFeatureFromJson(jsonResponse);
+        List<Album> albums = extractAlbumFeatureFromJson(jsonResponse);
 
         return albums;
+    }
+
+    //Create album list with given string json
+    private static List<Album> extractAlbumFeatureFromJson(String albumJSON) {
+
+        if (TextUtils.isEmpty(albumJSON)) {
+            return null;
+        }
+
+        //Result album arrayList
+        List<Album> albums = new ArrayList<>();
+
+        try {
+            //Create a Json array
+            JSONArray albumArray = new JSONArray(albumJSON);
+
+            for (int i = 0; i < albumArray.length(); i++) {
+                //Take a object in array
+                JSONObject currentAlbum = albumArray.getJSONObject(i);
+
+                //Extract values of album
+                int userId = currentAlbum.getInt("userId");
+                int id = currentAlbum.getInt("id");
+                String title = currentAlbum.getString("title");
+
+                //Create a new album
+                Album album = new Album(userId, id, title);
+
+                //Add album to arrayList
+                albums.add(album);
+            }
+
+        } catch (JSONException e) {
+            Log.e("QueryUtils", "Problem parsing the album JSON results", e);
+        }
+        return albums;
+    }
+
+    //Return list of photos
+    public static List<Photo> fetchPhotoData(String requestUrl) {
+
+        URL url = createUrl(requestUrl);
+
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+
+        List<Photo> photos = extractPhotoFeatureFromJson(jsonResponse);
+
+        return photos;
+    }
+
+    //Create photo list with given string json
+    private static List<Photo> extractPhotoFeatureFromJson(String photoJSON) {
+
+        if (TextUtils.isEmpty(photoJSON)) {
+            return null;
+        }
+
+        //Result photo arrayList
+        List<Photo> photos = new ArrayList<>();
+
+        try {
+            //Create a Json array
+            JSONArray albumArray = new JSONArray(photoJSON);
+
+            for (int i = 0; i < albumArray.length(); i++) {
+                //Take a object in array
+                JSONObject currentPhoto = albumArray.getJSONObject(i);
+
+                //Extract values of photo
+                int albumId = currentPhoto.getInt("albumId");
+                int id = currentPhoto.getInt("id");
+                String title = currentPhoto.getString("title");
+                String url = currentPhoto.getString("url");
+                String thumbnailUrl = currentPhoto.getString("thumbnailUrl");
+
+                //Create a new photo
+                Photo photo = new Photo(albumId, id, title, url, thumbnailUrl);
+
+                //Add photo to arrayList
+                photos.add(photo);
+            }
+
+        } catch (JSONException e) {
+            Log.e("QueryUtils", "Problem parsing the album JSON results", e);
+        }
+        return photos;
     }
 
     //Return given URL object
@@ -107,41 +198,4 @@ public class QueryUtils {
         }
         return output.toString();
     }
-
-    //Create album list with given string json
-    private static List<Album> extractFeatureFromJson(String albumJSON) {
-
-        if (TextUtils.isEmpty(albumJSON)) {
-            return null;
-        }
-
-        //Result album arrayList
-        List<Album> albums = new ArrayList<>();
-
-        try {
-            //Create a Json array
-            JSONArray albumArray = new JSONArray(albumJSON);
-
-            for (int i = 0; i < albumArray.length(); i++) {
-                //Take a object in array
-                JSONObject currentAlbum = albumArray.getJSONObject(i);
-
-                //Extract values of album
-                int userId = currentAlbum.getInt("userId");
-                int id = currentAlbum.getInt("id");
-                String title = currentAlbum.getString("title");
-
-                //Create a new album
-                Album album = new Album(userId, id, title);
-
-                //Add album to arrayList
-                albums.add(album);
-            }
-
-        } catch (JSONException e) {
-            Log.e("QueryUtils", "Problem parsing the album JSON results", e);
-        }
-        return albums;
-    }
-
 }

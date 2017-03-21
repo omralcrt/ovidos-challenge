@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,11 +19,8 @@ import java.util.List;
 public class AlbumActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Album>> {
 
     private static final String ALBUM_REQUEST_URL = "http://jsonplaceholder.typicode.com/albums";
-
     private static final int ALBUM_LOADER_ID = 1;
-
     private AlbumAdapter adapter;
-
     private TextView emptyStateTextView;
 
     @Override
@@ -51,10 +48,12 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
 
                 Album currentAlbum = adapter.getItem(position); //for album id
                 Intent photoIntent = new Intent(AlbumActivity.this, PhotoActivity.class);
+                photoIntent.putExtra("albumID", currentAlbum.getId()+"");
                 startActivity(photoIntent);
             }
         });
 
+        //Check internet connection
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
