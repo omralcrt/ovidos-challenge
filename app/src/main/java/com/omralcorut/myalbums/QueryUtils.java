@@ -136,7 +136,7 @@ public class QueryUtils {
         return photos;
     }
 
-    //Return given URL object
+    //Helper method for converting string url to URL object
     private static URL createUrl(String stringUrl) {
         URL url = null;
         try {

@@ -3,15 +3,20 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:background="#ECECEC"
+    android:paddingBottom="16dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp">
     
     <ListView
         android:id="@+id/list"
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"/>
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
     
     <TextView
         android:id="@+id/empty_view"

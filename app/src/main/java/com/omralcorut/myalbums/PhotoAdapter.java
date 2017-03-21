@@ -9,6 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.List;
 
@@ -23,14 +28,17 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     private Context mContext;
     private List<Photo> photos;
 
+    //Custom holder for views in recyclerView
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView thumbnail;
+        public View loadingIndicator;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            loadingIndicator = view.findViewById(R.id.loading_indicator);
         }
     }
 
@@ -40,22 +48,41 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         this.photos = photos;
     }
 
+    //Create custom listItem view
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.photo_list_item, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
+    //Display thumbnail and title of item
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Photo photo = photos.get(position);
-        holder.title.setText(photo.getTitle());
+        holder.loadingIndicator.setVisibility(View.VISIBLE);
+        holder.title.setText(WordUtils.capitalize(photo.getTitle()));
 
-        // loading album cover using Glide library
-        Glide.with(mContext).load(photo.getThumbnailUrl()).into(holder.thumbnail);
+        // loading image using Glide library
+        Glide.with(mContext).load(photo.getThumbnailUrl())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable>
+                            target, boolean isFirstResource) {
+                        return false;
+                    }
 
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model,
+                                                   Target<GlideDrawable> target,
+                                                   boolean isFromMemoryCache,
+                                                   boolean isFirstResource) {
+                        //When image loaded, hide loading indicator
+                        holder.loadingIndicator.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(holder.thumbnail);
     }
 
     @Override
@@ -63,10 +90,18 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         return photos.size();
     }
 
+    //Clear adapter
     public void clear() {
         int size = this.photos.size();
         this.photos.clear();
         notifyItemRangeRemoved(0, size);
+    }
+
+    //Add new list to adapter
+    public void addALl(List<Photo> datas){
+        photos.clear();
+        photos.addAll(datas);
+        notifyDataSetChanged();
     }
 }
 

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public class AlbumAdapter extends ArrayAdapter<Album> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //Check is there a listItem view
+        //Create is a listItem view
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
@@ -36,7 +38,7 @@ public class AlbumAdapter extends ArrayAdapter<Album> {
 
         //Display title of object
         TextView title = (TextView) listItemView.findViewById(R.id.title);
-        title.setText(currentAlbum.getTitle().toUpperCase());
+        title.setText(WordUtils.capitalize(currentAlbum.getTitle()));
 
         return listItemView;
     }

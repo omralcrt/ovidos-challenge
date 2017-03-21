@@ -23,6 +23,7 @@ public class PhotoLoader extends AsyncTaskLoader<List<Photo>> {
         forceLoad();
     }
 
+    //Fetch all data of photo in the background
     @Override
     public List<Photo> loadInBackground() {
         if (url == null) {

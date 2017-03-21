@@ -23,6 +23,7 @@ public class AlbumLoader extends AsyncTaskLoader<List<Album>> {
         forceLoad();
     }
 
+    //Fetch all data of album in the background
     @Override
     public List<Album> loadInBackground() {
         if (url == null) {

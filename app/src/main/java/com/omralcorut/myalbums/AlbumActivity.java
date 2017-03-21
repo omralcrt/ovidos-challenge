@@ -16,7 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Album>> {
+public class AlbumActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<List<Album>> {
 
     private static final String ALBUM_REQUEST_URL = "http://jsonplaceholder.typicode.com/albums";
     private static final int ALBUM_LOADER_ID = 1;
@@ -45,9 +46,10 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
         albumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Album currentAlbum = adapter.getItem(position); //for album id
+                //Clicked album
+                Album currentAlbum = adapter.getItem(position);
                 Intent photoIntent = new Intent(AlbumActivity.this, PhotoActivity.class);
+                //Send albumID to Photos Activity
                 photoIntent.putExtra("albumID", currentAlbum.getId()+"");
                 startActivity(photoIntent);
             }
@@ -62,6 +64,7 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(ALBUM_LOADER_ID, null, this);
         } else {
+            //Show error message
             View loadingIndicator = findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.GONE);
             emptyStateTextView.setText(R.string.no_internet_connection);
@@ -69,16 +72,17 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
 
     }
 
-
+    //Fetch albums in the background
     @Override
     public Loader<List<Album>> onCreateLoader(int id, Bundle args) {
         return new AlbumLoader(this, ALBUM_REQUEST_URL);
     }
 
+    //When fetched, show albums in the listview
     @Override
     public void onLoadFinished(Loader<List<Album>> loader, List<Album> albums) {
 
-        //Show loading indicator
+        //Remove loading indicator
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
@@ -87,6 +91,7 @@ public class AlbumActivity extends AppCompatActivity implements LoaderManager.Lo
 
         adapter.clear();
 
+        //Check albums is null or empty
         if (albums != null && !albums.isEmpty()) {
             adapter.addAll(albums);
         }
