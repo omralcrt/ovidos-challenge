@@ -5,10 +5,10 @@ This project is created for intern appeal. It uses prepared API service. It pull
 
 Data comes from [JSONPlaceholder](http://jsonplaceholder.typicode.com/)
 
-### **Screenshots**
+## Screenshots
 <img src="screenshots/oc_screenshot_1.png" width="20%"> <img src="screenshots/oc_screenshot_2.png" width="20%">
 
-# Installation & Usage
+## Installation & Usage
 ```bash
 # Clone the repository
 $ git clone https://github.com/omralcrt/ovidos-challenge.git
